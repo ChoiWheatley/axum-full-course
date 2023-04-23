@@ -25,6 +25,7 @@ async fn main() {
     let routes_all = Router::new()
         .merge(routes_hello())
         .merge(web::routes_login::routes())
+        // create a middleware that consumes response, give it back to another response
         .layer(middleware::map_response(main_response_mapper))
         .fallback_service(routes_static());
 
