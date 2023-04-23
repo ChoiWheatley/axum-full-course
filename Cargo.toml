@@ -13,6 +13,7 @@ serde_json = "1"
 # Axum
 axum = "0.6.15"
 tower-http = {version = "0.4", features = ["fs"]}
+tower-cookies = "0.9"
 tokio-service = {version = "0.1"}
 
 [dev-dependencies]

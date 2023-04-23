@@ -2,8 +2,9 @@
 use axum::{routing::post, Json, Router};
 use serde::Deserialize;
 use serde_json::{json, Value};
+use tower_cookies::{Cookie, Cookies};
 
-use crate::{Error, Result};
+use crate::{web::AUTH_TOKEN, Error, Result};
 
 pub fn routes() -> Router {
     Router::new().route("/api/login", post(api_login))
@@ -11,7 +12,7 @@ pub fn routes() -> Router {
 
 /// handler for login routes
 /// returns our typed `Result` where our `Error` type had implemented `IntoResponse`
-async fn api_login(payload: Json<LoginPayload>) -> Result<Json<Value>> {
+async fn api_login(cookies: Cookies, payload: Json<LoginPayload>) -> Result<Json<Value>> {
     println!("@@@@@ {:<12} - api_login", "HANDLER");
 
     // TODO: Implement real database and authentication logic
@@ -19,7 +20,9 @@ async fn api_login(payload: Json<LoginPayload>) -> Result<Json<Value>> {
         return Err(Error::LoginFail);
     }
 
-    // TODO: Set cookies
+    // cookie value format: {{username}}-{{user-id}}.{{expression date}}.{{signature}}
+    // FIXME: Implement real auth-token generation and signature, which is out of this tutorial
+    cookies.add(Cookie::new(AUTH_TOKEN, "user-1.exp.sign"));
 
     // Create the success body
     let body = Json(json!({

@@ -36,5 +36,8 @@ async fn quick_dev() -> Result<()> {
     .print()
     .await?;
 
+    // test cookie has set
+    // hc.do_get("/hello2/Mike").await?.print().await?;
+
     Ok(())
 }
